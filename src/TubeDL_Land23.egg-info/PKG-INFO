@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: TubeDL-Land23
+Version: 1.1.0
+Summary: Command-line tool to download youtube videos
+Home-page: https://github.com/LandStander27/TubeDL
+Author: Land23
+Author-email: landstander23@duck.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# TubeDL
+A command line tool that downloads youtube videos
+
+YOU NEED FFMPEG FOR THIS TO WORK
+
+Commands:
+    Input: [Program name] [Option] [Link] [Video type] [-o]
+
+    Options: -d, -i, -help
+        -d: Download
+        -i: Show info
+        -help: Show this menu
+
+    Video type: 144p, 240p, etc or -a for audio
+    -o: Adding -o opens the file when done
+
+
