@@ -3,12 +3,13 @@ import sys
 from colorama import Fore as f
 from time import sleep
 import datetime
+import pytube
 from pytube import YouTube as y
 from better_ffmpeg_progress import FfmpegProcess as ffmpeg
 import validators
 
 args = []
-
+print("test")
 def Close(Code=None):
     if (len(args) != 0):
         if (args[0] == "-i" or args[0] == "-help") == False:
@@ -57,7 +58,14 @@ Options: -d, -i, -help
     -help: Show this menu
 
 Video type: 144p, 240p, etc or -a for audio
--o: Adding -o opens the file when done\n''')
+-o: Adding -o opens the file when done
+
+Examples: 
+    If you wanted to download a video at 720p: tube -d <link> 720p
+    If you wanted to download a video and open it after downloaded: tube -d <link> <resolution> -o
+    If you wanted to download audio of a video: tube -d <link> -a
+    If you wanted to show info about a video: tube -i <link>
+\n''')
 
 class GetVideo():
     def __init__(self, link):
