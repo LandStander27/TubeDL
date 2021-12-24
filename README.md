@@ -5,11 +5,11 @@ YOU NEED FFMPEG FOR THIS TO WORK
 
 Input: [Program name] [Option] [Link] [Search term] [Video type] [-o]
 
-Options: 
--d, -i, -s, -help
--d: Download
--i: Show info
--s: Search youtube and download most relevant video
+Options: \
+-d, -i, -s, -help\
+-d: Download\
+-i: Show info\
+-s: Search youtube and download most relevant video\
 -help: Show this menu
 
 Search term:
