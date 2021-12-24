@@ -9,6 +9,7 @@ import validators
 
 args = []
 
+
 def Close(Code=None):
     if (len(args) != 0):
         if (args[0] == "-i" or args[0] == "-help") == False:
@@ -23,10 +24,12 @@ def Close(Code=None):
         ShowHelp()
         sys.exit(f"{f.RED}{Code}{f.WHITE}")
 
+
 def AskToOverwrite(data):
     if (data == "-a") and (os.path.exists(vid.name_formatted + ".mp3")):
         while True:
-            option = input(f"{f.BLUE}File '{vid.name_formatted}.mp3' already exists. Overwrite ? [Y/n] {f.WHITE}").lower()
+            option = input(
+                f"{f.BLUE}File '{vid.name_formatted}.mp3' already exists. Overwrite ? [Y/n] {f.WHITE}").lower()
             if option == "y" or option == "":
                 break
             elif option == "n":
@@ -37,7 +40,8 @@ def AskToOverwrite(data):
                 print("Not an option")
     if (data != "-a") and (os.path.exists(vid.name_formatted + ".mp4")):
         while True:
-            option = input(f"{f.BLUE}File '{vid.name_formatted}.mp4' already exists. Overwrite ? [Y/n] {f.WHITE}").lower()
+            option = input(
+                f"{f.BLUE}File '{vid.name_formatted}.mp4' already exists. Overwrite ? [Y/n] {f.WHITE}").lower()
             if option == "y" or option == "":
                 break
             elif option == "n":
@@ -47,9 +51,10 @@ def AskToOverwrite(data):
             else:
                 print("Not an option")
 
+
 def ShowHelp():
     print(
-'''\nInput: [Program name] [Option] [Link] [Video type] [-o]
+        '''\nInput: [Program name] [Option] [Link] [Video type] [-o]
 
 Options: -d, -i, -help
     -d: Download
@@ -58,6 +63,7 @@ Options: -d, -i, -help
 
 Video type: 144p, 240p, etc or -a for audio
 -o: Adding -o opens the file when done\n''')
+
 
 class GetVideo():
     def __init__(self, link):
@@ -73,12 +79,15 @@ class GetVideo():
         self.name_formatted = self.yt.title
         for i in ["/", "\\", ":", "*", "?", '"', ">", "<", "|"]:
             self.name_formatted = self.name_formatted.replace(i, "_")
-        self.audios = self.yt.streams.filter(only_audio=True, file_extension="webm")
-        self.videos = self.yt.streams.filter(file_extension="mp4", adaptive=True, only_video=True)
+        self.audios = self.yt.streams.filter(
+            only_audio=True, file_extension="webm")
+        self.videos = self.yt.streams.filter(
+            file_extension="mp4", adaptive=True, only_video=True)
         self.resolutions = []
         for i in ["144p", "240p", "360p", "480p", "720p", "1080p"]:
             if (len(self.videos.filter(res=i)) > 0):
                 self.resolutions.append(i)
+
     def GetFormattedInfo(self):
         date = self.yt.publish_date
         return f'''\nAvailable resolutions: {", ".join(self.resolutions)}
@@ -87,8 +96,10 @@ Video author: {self.yt.author}
 Video length: {datetime.timedelta(seconds=int(self.yt.length))}
 Upload date: {"/".join([str(date.month), str(date.day), str(date.year)])}
 Views: {self.yt.views}'''
+
     def DownloadVideo(self, res):
-        FilesizeB = self.videos.filter(res=res).first().filesize + self.audios.last().filesize
+        FilesizeB = self.videos.filter(res=res).first(
+        ).filesize + self.audios.last().filesize
         print(FilesizeB)
         size = ""
         if FilesizeB > 1073741824:
@@ -102,7 +113,8 @@ Views: {self.yt.views}'''
                 else:
                     size = str(round(FilesizeB), 2) + "B"
         while True:
-            option = input(f"{f.BLUE}This will take up about {size}. Download ? [Y/n] {f.WHITE}").lower()
+            option = input(
+                f"{f.BLUE}This will take up about {size}. Download ? [Y/n] {f.WHITE}").lower()
             if option == "y" or option == "":
                 break
             elif option == "n":
@@ -124,7 +136,8 @@ Views: {self.yt.views}'''
         except Exception:
             Close("Error in downloading files")
         print("Combining audio with video...")
-        process = ffmpeg(["ffmpeg", "-y", "-i", "video.tmp", "-i", "audio.tmp", "video.mp4"])
+        process = ffmpeg(["ffmpeg", "-y", "-i", "video.tmp",
+                         "-i", "audio.tmp", "video.mp4"])
         process.run(ffmpeg_output_file="logs.tmp")
         if (os.path.exists(self.name_formatted + ".mp4")):
             os.remove(self.name_formatted + ".mp4")
@@ -146,7 +159,8 @@ Views: {self.yt.views}'''
                 else:
                     size = str(round(FilesizeB), 2) + "B"
         while True:
-            option = input(f"{f.BLUE}This will take up about {size}. Download ? [Y/n] {f.WHITE}").lower()
+            option = input(
+                f"{f.BLUE}This will take up about {size}. Download ? [Y/n] {f.WHITE}").lower()
             if option == "y" or option == "":
                 break
             elif option == "n":
@@ -171,6 +185,7 @@ Views: {self.yt.views}'''
             os.remove(self.name_formatted + ".mp3")
         os.rename("audio.mp3", self.name_formatted + ".mp3")
         print(f"{f.GREEN}Finished{f.WHITE}")
+
 
 def Main(argsv):
     global args
