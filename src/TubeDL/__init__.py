@@ -1,5 +1,7 @@
 from TubeDL import tube
 import sys
+import os
+from time import sleep 
 def Setup():
     args = []
     #if (sys.argv[0] == os.path.basename(__file__)):
