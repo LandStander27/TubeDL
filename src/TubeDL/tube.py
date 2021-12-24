@@ -90,7 +90,6 @@ class SearchYoutube():
         self.search.get_next_results()
 
 
-
 class GetVideo():
     def __init__(self, link=None, vid=None):
         if link != None:
@@ -235,7 +234,7 @@ def Main(argsv):
 
     print("Checking if ffmpeg is installed...")
     sleep(1)
-    code = os.system("ffmpeg -version > ffmpeg.tmp 2>$1")
+    code = os.system("ffmpeg -version > ffmpeg.tmp 2>&1")
     os.remove("ffmpeg.tmp")
 
     if (code != 0):
