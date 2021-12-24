@@ -12,15 +12,15 @@ Options: \
     -s: Search youtube and download most relevant video\
     -help: Show this menu
 
-Search term:
+Search term:\
     If using "-s" then enter your search term here, if not using "-s" then ignore this
 
-Video type: 144p, 240p, etc or -a for audio
+Video type: 144p, 240p, etc or -a for audio\
 -o: Adding -o opens the file when done
 
-Examples:
-    If you wanted to download a video at 720p: tube -d <link> 720p
-    If you wanted to download a video and open it after downloaded: tube -d <link> <resolution> -o
-    If you wanted to download audio of a video: tube -d <link> -a
-    If you wanted to show info about a video: tube -i <link>
+Examples:\
+    If you wanted to download a video at 720p: tube -d <link> 720p\
+    If you wanted to download a video and open it after downloaded: tube -d <link> <resolution> -o\
+    If you wanted to download audio of a video: tube -d <link> -a\
+    If you wanted to show info about a video: tube -i <link>\
     If you wanted to download a video that has something to do with apples: tube -s apples
