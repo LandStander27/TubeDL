@@ -262,7 +262,7 @@ def Main(argsv):
     os.remove("ffmpeg.tmp")
 
     if (code != 0):
-        Close("FFmpeg not installed or there was a error trying to open it")
+        Close("FFmpeg not installed or there was an error trying to open it")
     if (args[0] == "-s"):
         print("Getting most relevant video...")
         sleep(1)
