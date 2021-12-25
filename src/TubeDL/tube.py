@@ -69,7 +69,7 @@ Search term:
 Video type: 144p, 240p, etc or -a for audio
 -o: Adding -o opens the file when done
 
-Examples: 
+Examples:
     If you wanted to download a video at 720p: tube -d <link> 720p
     If you wanted to download a video and open it after downloaded: tube -d <link> <resolution> -o
     If you wanted to download audio of a video: tube -d <link> -a
@@ -90,6 +90,29 @@ class SearchYoutube():
         self.search.get_next_results()
 
 
+class GetPlaylist():
+    def __init__(self, link=None):
+        from pytube import Playlist
+        print("Getting playlist...")
+        if (bool(validators.url(link))) == False:
+            Close(f"Invalid link")
+        self.playlist = Playlist(link)
+        print("Getting playlist data...")
+        try:
+            self.playlist.title
+        except Exception:
+            Close("Error in getting video data")
+        self.name_formatted = self.playlist.title
+        for i in ["/", "\\", ":", "*", "?", '"', ">", "<", "|"]:
+            self.name_formatted = self.name_formatted.replace(i, "_")
+
+    def GetFormatedInfo(self):
+        return f'''\nTitle: {self.playlist.title}
+Amount of videos: {self.playlist.length}
+Owner: {self.playlist.owner}
+Views: {self.playlist.views}'''
+
+
 class GetVideo():
     def __init__(self, link=None, vid=None):
         if link != None:
@@ -99,7 +122,7 @@ class GetVideo():
             self.yt = y(link)
         else:
             self.yt = vid
-        print("Checking video...")
+        print("Getting video data...")
         try:
             self.yt.title
         except pytube.exceptions.VideoPrivate:
@@ -154,7 +177,8 @@ Views: {self.yt.views}'''
         print("Downloading video...")
         sleep(1)
         try:
-            self.videos.filter(res=res).first().download(filename="video.tmp")
+            self.videos.filter(res=res).first().download(
+                filename="video.tmp")
             print("Downloading audio...")
             sleep(1)
             self.audios.last().download(filename="audio.tmp")
@@ -164,7 +188,7 @@ Views: {self.yt.views}'''
             Close("Error in downloading files")
         print("Combining audio with video...")
         process = ffmpeg(["ffmpeg", "-y", "-i", "video.tmp",
-                         "-i", "audio.tmp", "video.mp4"])
+                          "-i", "audio.tmp", "video.mp4"])
         process.run(ffmpeg_output_file="logs.tmp")
         if (os.path.exists(self.name_formatted + ".mp4")):
             os.remove(self.name_formatted + ".mp4")
@@ -271,6 +295,30 @@ def Main(argsv):
             vid.DownloadVideo(option)
         Close()
 
+    if ("/playlist?list=" in args[1]):
+        print('''\nTubeDL detected this as a playlist. For every video it will show the info of the video, 
+and ask what resolution you want for each video as every video could have a differint resolution''')
+        playlist = GetPlaylist(link=args[1])
+        for vid in playlist.playlist.videos:
+            video = GetVideo(vid=vid)
+            while True:
+                print(video.GetFormattedInfo())
+                opt = input(
+                    "What resolution do you want ? [<resolution>p, -a] ").lower()
+                if (opt in video.resolutions or opt == "-a"):
+                    break
+                else:
+                    print("Invalid video type")
+            if (opt == "-a"):
+                video.DownloadAudio()
+            else:
+                video.DownloadVideo(opt)
+
+            for i in ["logs.tmp", "video.tmp", "audio.tmp"]:
+                if (os.path.exists(i)):
+                    os.remove(i)
+
+        Close()
     vid = GetVideo(link=args[1])
     if args[0] != "-i":
         if len(args) > 2:
