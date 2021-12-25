@@ -28,11 +28,14 @@ Options: \
     -s: Search youtube and download most relevant video\
     -help: Show this menu
 
+Info:\
+    If you paste a youtube playlist link instead of a video then it will go through all of the videos in the playlist and download them (-o does nothing when downloading playlists). Whenever selecting a resolution TubeDL will download the videos that have your selected resolution, if not, then you will be prompted to select a differint one.
+
 Search term:\
     If using "-s" then enter your search term here, if not using "-s" then ignore this
 
 Video type: 144p, 240p, etc or -a for audio\
--o: Adding -o opens the file when done
+    -o: Adding -o opens the file when done
 
 Examples:\
     If you wanted to download a video at 720p: tube -d <link> 720p\

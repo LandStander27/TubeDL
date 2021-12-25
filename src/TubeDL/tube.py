@@ -159,7 +159,7 @@ Views: {self.yt.views}'''
                 size = str(round(FilesizeB / 1024 / 1024, 2)) + "MB"
             else:
                 if FilesizeB > 1024:
-                    size = str(round(FilesizeB / 1024), 2) + "KB"
+                    size = str(round(FilesizeB / 1024, 2)) + "KB"
                 else:
                     size = str(round(FilesizeB), 2) + "B"
         while True:
@@ -205,7 +205,7 @@ Views: {self.yt.views}'''
                 size = str(round(FilesizeB / 1024 / 1024, 2)) + "MB"
             else:
                 if FilesizeB > 1024:
-                    size = str(round(FilesizeB / 1024), 2) + "KB"
+                    size = str(round(FilesizeB / 1024, 2)) + "KB"
                 else:
                     size = str(round(FilesizeB), 2) + "B"
         while True:
@@ -299,16 +299,24 @@ def Main(argsv):
         print('''\nTubeDL detected this as a playlist. For every video it will show the info of the video, 
 and ask what resolution you want for each video as every video could have a differint resolution''')
         playlist = GetPlaylist(link=args[1])
+        import shutil
         for vid in playlist.playlist.videos:
+            opt = args[2]
             video = GetVideo(vid=vid)
+            print(f"Downloading {video.yt.title}")
             while True:
-                print(video.GetFormattedInfo())
-                opt = input(
-                    "What resolution do you want ? [<resolution>p, -a] ").lower()
-                if (opt in video.resolutions or opt == "-a"):
-                    break
+                print(video.resolutions)
+                if (args[2] in video.resolutions or args[2] == "-a") == False:
+                    print(
+                        f"Available resolutions: {','.join(video.resolutions)}")
+                    opt = input(
+                        "What resolution do you want ? [<resolution>p, -a] ").lower()
+                    if (opt in video.resolutions or opt == "-a"):
+                        break
+                    else:
+                        print("Invalid video type")
                 else:
-                    print("Invalid video type")
+                    break
             if (opt == "-a"):
                 video.DownloadAudio()
             else:
@@ -317,6 +325,17 @@ and ask what resolution you want for each video as every video could have a diff
             for i in ["logs.tmp", "video.tmp", "audio.tmp"]:
                 if (os.path.exists(i)):
                     os.remove(i)
+
+            if (os.path.exists(playlist.name_formatted)) == False:
+                os.mkdir(playlist.name_formatted)
+
+            if (os.path.exists(video.name_formatted + ".mp4")):
+                shutil.move(video.name_formatted + ".mp4", "./" +
+                            playlist.name_formatted + "/" + video.name_formatted + ".mp4")
+            else:
+                if (os.path.exists(video.name_formatted + ".mp3")):
+                    shutil.move(video.name_formatted + ".mp3", "./" +
+                                playlist.name_formatted + "/" + video.name_formatted + ".mp3")
 
         Close()
     vid = GetVideo(link=args[1])
